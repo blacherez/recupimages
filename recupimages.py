@@ -8,7 +8,8 @@ import re
 import shutil
 
 EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif"] # Extensions autorisées pour nos images
-BACKUP_DIR = "backup"
+BACKUP_DIR = "backup" # Répertoire dans lequel on copie les fichiers d'origine avant de les modifier
+IMAGE_DIR = "downloads" # Répertoire pour les images
 
 def sans_query(url):
     """Renvoie l'url sans querystring"""
@@ -77,7 +78,7 @@ def traite(contenu):
     print(images)
     correspondances = {}
     for i in images:
-        correspondances[i] = get_image(i, "downloads")
+        correspondances[i] = get_image(i, IMAGE_DIR)
     if len(correspondances):
         pattern = re.compile('|'.join(correspondances.keys()))
         r = pattern.sub(lambda x: correspondances[x.group()], contenu)
