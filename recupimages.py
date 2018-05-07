@@ -115,5 +115,3 @@ if __name__ == '__main__':
         if nouveau_contenu != contenu:
             with open(fichier, "w") as f:
                 f.write(nouveau_contenu)
-    # with open("fichier_test.html") as f:
-    #     print(liste_images(f, True))
