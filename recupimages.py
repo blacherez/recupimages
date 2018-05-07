@@ -9,13 +9,24 @@ import shutil
 
 EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif"] # Extensions autorisées pour nos images
 BACKUP_DIR = "backup" # Répertoire dans lequel on copie les fichiers d'origine avant de les modifier
-IMAGE_DIR = "downloads" # Répertoire pour les images
-IMAGE_PREFIX = "/asset/spam" # Chemin vers le répertoire pour les images pour les liens
+BASE_URL = "http://blog.lamaisondelamontagne.org" # URL de base du site d'origine pour compléter les URL relatives
+IMAGE_DIR = "archives_images" # Répertoire pour les images
+IMAGE_PREFIX = "/maison/archives_images" # Chemin vers le répertoire pour les images pour les liens
 
 def sans_query(url):
     """Renvoie l'url sans querystring"""
     p = urllib.parse.urlparse(url)
-    new_url = p.scheme + "://" + p.netloc + p.path
+    return urllib.parse.urlunparse((p.scheme, p.netloc, p.path, "", "", ""))
+
+def absolute_url(url):
+    """Renvoie l'url en transformant les url relatives en url absolues"""
+    p = urllib.parse.urlparse(url)
+    if p.scheme:
+        # L'url est absolue
+        new_url = url
+    else:
+        # URL relative : on ajoute BASE_URL au début
+        new_url = urllib.parse.urljoin(BASE_URL, url)
     return new_url
 
 def is_image(url):
@@ -85,6 +96,7 @@ def traite(contenu):
     correspondances = {}
     for i in images:
         correspondances[i] = get_image(i, IMAGE_DIR, IMAGE_PREFIX)
+        print(correspondances)
     if len(correspondances):
         pattern = re.compile('|'.join(correspondances.keys()))
         r = pattern.sub(lambda x: correspondances[x.group()][1], contenu)
