@@ -6,6 +6,7 @@ import urllib
 import os
 import re
 import shutil
+import sys
 
 EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif"] # Extensions autorisées pour nos images
 BACKUP_DIR = "backup" # Répertoire dans lequel on copie les fichiers d'origine avant de les modifier
@@ -85,18 +86,18 @@ def get_image(url, dest, prefixe_http):
     else:
         (nouveau_nom, nom_lien) = chemin_image(url, dest, prefixe_http)
         try:
-            urllib.request.urlretrieve(url, nouveau_nom)
-        except urllib.error.HTTPError as e:
-            sys.stderr.write("Erreur pour le fichier %s : %s (%s)" % (url, e.code, e.reason))
+            urllib.request.urlretrieve(absolute_url(url), nouveau_nom)
+        except:
+            sys.stderr.write("Erreur pour le fichier %s : %s\n" % (url, sys.exc_info()[0]))
     return (nouveau_nom, nom_lien)
 
 def traite(contenu):
     images = liste_images(contenu, True)
-    print(images)
+    #print(images)
     correspondances = {}
     for i in images:
         correspondances[i] = get_image(i, IMAGE_DIR, IMAGE_PREFIX)
-        print(correspondances)
+        #print(correspondances)
     if len(correspondances):
         pattern = re.compile('|'.join(correspondances.keys()))
         r = pattern.sub(lambda x: correspondances[x.group()][1], contenu)
