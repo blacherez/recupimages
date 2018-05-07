@@ -73,7 +73,10 @@ def get_image(url, dest, prefixe_http):
         raise NotADirectoryError
     else:
         (nouveau_nom, nom_lien) = chemin_image(url, dest, prefixe_http)
-        urllib.request.urlretrieve(url, nouveau_nom)
+        try:
+            urllib.request.urlretrieve(url, nouveau_nom)
+        except urllib.error.HTTPError as e:
+            sys.stderr.write("Erreur pour le fichier %s : %s (%s)" % (url, e.code, e.reason))
     return (nouveau_nom, nom_lien)
 
 def traite(contenu):
