@@ -10,9 +10,9 @@ import sys
 
 EXTENSIONS = [".png", ".jpg", ".jpeg", ".gif"] # Extensions autorisées pour nos images
 BACKUP_DIR = "backup" # Répertoire dans lequel on copie les fichiers d'origine avant de les modifier
-BASE_URL = "http://blog.lamaisondelamontagne.org" # URL de base du site d'origine pour compléter les URL relatives
+BASE_URL = "http://liltools.lacherez.info" # URL de base du site d'origine pour compléter les URL relatives
 IMAGE_DIR = "archives_images" # Répertoire pour les images
-IMAGE_PREFIX = "/maison/archives_images" # Chemin vers le répertoire pour les images pour les liens
+IMAGE_PREFIX = "/archives_images" # Chemin vers le répertoire pour les images pour les liens
 
 def sans_query(url):
     """Renvoie l'url sans querystring"""
